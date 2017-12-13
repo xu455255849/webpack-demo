@@ -6,7 +6,8 @@ const webpack = require('webpack');
 module.exports =  merge(common, {
     devtool: 'inline-source-map',
     devServer: {
-        contentBase: './dist',
+        contentBase: '../dist',
+        hot: true,
         port: 9000
     },
     plugins: [
