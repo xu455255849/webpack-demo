@@ -1,6 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
     entry: './src/main.js',
@@ -9,11 +9,13 @@ module.exports = {
         path: path.resolve(__dirname, 'dist')
     },
     plugins: [
+        new CleanWebpackPlugin(['dist']),
         new HtmlWebpackPlugin({
             template: 'index.html',
             chunks: ['app']
         })
     ],
+    devtool: 'inline-source-map',  //开发模式
     module: {
         rules: [
             {
