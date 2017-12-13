@@ -7,7 +7,7 @@ function component() {
     var element = document.createElement('div');
     
     // Lodash（目前通过一个 script 脚本引入）对于执行这一行是必需的
-    element.innerHTML = _.join(['Hellasdwwwwwwasdaso', 'webpack'], ' ');
+    element.innerHTML = _.join(['Hellsasdao', 'webpack'], ' ');
     element.classList.add('hello');
     
     var myIcon = new Image();
@@ -20,4 +20,8 @@ function component() {
 document.body.appendChild(component());
 
 
-
+ if (module.hot) {
+     module.hot.accept( function() {
+           console.log('Accepting the updated printMe module!');
+       })
+ }

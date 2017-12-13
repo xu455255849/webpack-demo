@@ -2,7 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const webpack = require('webpack');
-
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
     entry: './src/main.js',
@@ -12,15 +12,20 @@ module.exports = {
         publicPath: '/'
     },
     plugins: [
+        new UglifyJSPlugin(),
         new CleanWebpackPlugin(['dist']),
         new HtmlWebpackPlugin({
             template: 'index.html',
             chunks: ['app']
-        })
+        }),
+        new webpack.NamedModulesPlugin(),
+        new webpack.HotModuleReplacementPlugin()
     ],
     devtool: 'inline-source-map',  //开发模式
     devServer: {
-        contentBase: './dist'
+        contentBase: './dist',
+        hot: true,
+        port: 9000
     },
     module: {
         rules: [
