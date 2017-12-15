@@ -30,17 +30,11 @@ module.exports = {
     ],
     module: {
         rules: [
-           /* {
+            {
                 test: /\.js$/,
                 exclude: /(node_modules|bower_components)/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['preset-env'],
-                        plugins: ['transform-runtime']
-                    }
-                }
-            },*/
+                loader: 'babel-loader'
+            },
             {
                 test: /\.css$/,
                 use: [
@@ -52,6 +46,17 @@ module.exports = {
                 test: /\.(png|svg|jpg|gif)$/,
                 use: [
                     'file-loader'
+                ]
+            },
+            {
+                test: /\.(png|jpg|gif)$/,
+                use: [
+                    {
+                        loader: 'url-loader',
+                        options: {
+                            limit: 8192
+                        }
+                    }
                 ]
             },
             {
