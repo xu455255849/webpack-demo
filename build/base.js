@@ -1,6 +1,10 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const webpack = require('webpack');
+
+
+
 
 module.exports = {
     entry: {
@@ -15,19 +19,6 @@ module.exports = {
         publicPath: '/',
         path: path.resolve(__dirname, '../dist')
     },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: 'index.html',
-            inject: true
-        }),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'vendor'
-        }),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'runtime'
-        }),
-     
-    ],
     module: {
         rules: [
             {
@@ -37,34 +28,37 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: [
-                    'style-loader',
-                    'css-loader'
-                ]
+                use: ExtractTextPlugin.extract({
+                    fallback: "style-loader",
+                    use: "css-loader?minimize"
+                }),
             },
             {
-                test: /\.(png|svg|jpg|gif)$/,
-                use: [
-                    'file-loader'
-                ]
-            },
-            {
-                test: /\.(png|jpg|gif)$/,
-                use: [
-                    {
-                        loader: 'url-loader',
-                        options: {
-                            limit: 8192
-                        }
-                    }
-                ]
-            },
-            {
-                test: /\.(woff|woff2|eot|ttf|otf)$/,
-                use: [
-                    'file-loader'
-                ]
+                test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
+                loader: 'url-loader',
+                options: {
+                    limit: 8192,
+                    fallback: 'file-loader'
+                }
             }
         ]
-    }
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: 'index.html',
+            inject: true
+        }),
+        new webpack.optimize.CommonsChunkPlugin({
+            minChunks: Infinity,
+            name: 'vendor'
+        }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'common'
+        }),
+        new ExtractTextPlugin({
+            // 从 .js 文件中提取出来的 .css 文件的名称
+            filename: `[name]_[hash].css`,
+        }),
+    
+    ]
 };
