@@ -1,8 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const webpack = require('webpack');
-
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 
 
@@ -21,17 +19,24 @@ module.exports = {
     },
     module: {
         rules: [
-            {
+            /*{
                 test: /\.js$/,
                 exclude: /(node_modules|bower_components)/,
                 loader: 'babel-loader'
-            },
+            },*/
             {
                 test: /\.css$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: "style-loader",
-                    use: "css-loader?minimize"
-                }),
+                use: [
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            // you can specify a publicPath here
+                            // by default it use publicPath in webpackOptions.output
+                            publicPath: '../'
+                        }
+                    },
+                    "css-loader"
+                ]
             },
             {
                 test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
@@ -48,17 +53,11 @@ module.exports = {
             template: 'index.html',
             inject: true
         }),
-        new webpack.optimize.CommonsChunkPlugin({
-            minChunks: Infinity,
-            name: 'vendor'
-        }),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'common'
-        }),
-        new ExtractTextPlugin({
-            // 从 .js 文件中提取出来的 .css 文件的名称
-            filename: `[name]_[hash].css`,
-        }),
-    
+        new MiniCssExtractPlugin({
+            // Options similar to the same options in webpackOptions.output
+            // both options are optional
+            filename: "[name].css",
+            chunkFilename: "[id].css"
+        })
     ]
 };

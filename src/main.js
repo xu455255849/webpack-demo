@@ -7,7 +7,7 @@ function component() {
     
     // Lodash（目前通过一个 script 脚本引入）对于执行这一行是必需的
     
-    var arr = ['hello', 'world', 'xushaoping']
+    var arr = ['hello', 'world', 'xuaa']
     arr.forEach( (it)=> {
         element.innerHTML += it + '<br />'
     });
